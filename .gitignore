@@ -1,4 +1,7 @@
 weather/
+weather-old/
+.env
+
 __pycache__/
 *.pyc
 *.pyo
