@@ -30,18 +30,11 @@ if "hourly" in data and data["hourly"]["time"]:
         "temperature_2m": data["hourly"]["temperature_2m"],
         "precipitation": data["hourly"]["precipitation"]
     })
-
-    # Docker-friendly data folder
-    if os.path.exists("/app"):
-        output_dir = "/app/data"
-    else:
-        # fallback for local runs
-        output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-
+    # Use /app/data in Docker, project root data/ otherwise
+    output_dir = "/app/data" if os.path.exists("/app") else os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, "openmeteo_data.csv")
     df.to_csv(output_path, index=False)
-
     print(f"Data saved to {output_path}")
 else:
     print("No data returned from API")
